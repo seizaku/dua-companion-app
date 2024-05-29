@@ -22,12 +22,12 @@ export async function generateContent(prompt: string) {
     },
   ];
 
-  const result = await gemini.generateContentStream([...instructions]);
+  const result = await gemini.generateContent([...instructions]);
 
-  for await (const item of result.stream) {
-    console.log(item.text());
-  }
+  // for await (const item of result.stream) {
+  //   console.log(item.text());
+  // }
 
-  const response = (await result.response).text();
+  const response = (result.response).text();
   return response;
 }
