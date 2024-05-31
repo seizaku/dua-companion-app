@@ -6,7 +6,6 @@ export async function generateContent(prompt: string) {
   const API_KEY = process.env.GOOGLE_API_KEY! as string;
 
   const generationConfig: GenerationConfig = {
-    maxOutputTokens: 200,
     temperature: 1.0,
   };
 
