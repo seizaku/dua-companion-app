@@ -1,12 +1,18 @@
 "use server";
 
-import { GoogleGenerativeAI, Part } from "@google/generative-ai";
+import { GenerationConfig, GoogleGenerativeAI, Part } from "@google/generative-ai";
 
 export async function generateContent(prompt: string) {
   const API_KEY = process.env.GOOGLE_API_KEY! as string;
 
+  const generationConfig: GenerationConfig = {
+    maxOutputTokens: 200,
+    temperature: 1.0,
+  };
+
   const gemini = new GoogleGenerativeAI(API_KEY).getGenerativeModel({
     model: "gemini-1.5-flash-latest",
+    generationConfig
   });
 
   const instructions: Part[] = [
