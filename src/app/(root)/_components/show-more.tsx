@@ -3,46 +3,50 @@
 import { Button } from "@/components/ui/button";
 import { generateContent } from "@/server-actions/ai-chat";
 import { useStore } from "@/stores/dua-store";
-import { useState } from "react";
+import { useLoadingState } from "@/stores/loading-store";
 
 export const ShowMore = () => {
-  const [loading, setLoading] = useState(false);
+  const { isLoading, setLoading } = useLoadingState();
 
   const { addDua, query } = useStore();
   async function handleSubmit() {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    let result = await generateContent(query);
-    let dua = eval(result);
-    if (!dua) {
+      let result = await generateContent(query);
+      let dua = eval(result);
+      if (!dua) {
+        setLoading(false);
+        return;
+      }
+
+      for await (const item of dua) {
+        addDua(
+          item.title,
+          item.originalText,
+          item.translation,
+          item.explanation,
+          item.source,
+          item.reference
+        );
+      }
+
       setLoading(false);
-      return;
+    } catch (err) {
+      setLoading(false);
+      console.error(err);
     }
-
-    console.log(dua);
-    for (let i = 0; i < dua.length; i++) {
-      addDua(
-        dua[i].title,
-        dua[i].originalText,
-        dua[i].translation,
-        dua[i].explanation,
-        dua[i].source,
-        dua[i].reference
-      );
-    }
-
-    setLoading(false);
   }
 
   return (
     <Button
       onClick={handleSubmit}
-      disabled={loading}
+      disabled={isLoading}
       className="w-fit mx-auto"
       variant={"secondary"}
       size={"sm"}
     >
-      Show More
+      {!isLoading ? "Show More" : "Generating Content..."}
     </Button>
   );
 };
