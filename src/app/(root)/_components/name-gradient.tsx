@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { NAMES_OF_ALLAH } from "@/constants/names";
 
 interface ApiData {
   name?: string;
@@ -27,14 +28,7 @@ export const NameGradient = ({ color }: { color: string }) => {
 
   async function fetchName() {
     let randomNumber = Math.floor(Math.random() * 99) + 1;
-    let res = await fetch(
-      `http://api.aladhan.com/v1/asmaAlHusna/${randomNumber}`,
-      {
-        cache: "no-cache",
-      }
-    );
-
-    let { name, en } = (await res.json()).data[0];
+    let { name, en } = NAMES_OF_ALLAH[randomNumber];
     setName({ name, en });
   }
 
