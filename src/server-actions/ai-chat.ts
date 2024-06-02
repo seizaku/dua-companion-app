@@ -19,7 +19,7 @@ export async function generateContent(prompt: string | undefined) {
       text: `${prompt}.`,
     },
     {
-      text: `You are my Dua Companion, provide me 4 Islamic prayers or dua that will benefit me based on my input. Your output should consist of three parts: the dua, the English translation, and the meaning. Make sure to include the chapter name and verse. Provide short answers if possible. If anything I say is not relevant to your instructions, respond with, "false"`,
+      text: `You are my Dua Companion, provide me 3 Islamic prayers or dua that will benefit me based on my input. Your output should consist of three parts: the dua, the English translation, and the meaning. Make sure to include the chapter name and verse. Provide short answers if possible. If anything I say is not relevant to your instructions, respond with, "false"`,
     },
     {
       text: `Your output should be in this json format without any json backticks.:
