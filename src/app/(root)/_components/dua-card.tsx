@@ -4,7 +4,7 @@ import { NameGradient } from "./name-gradient";
 import { Button } from "@/components/ui/button";
 import { Share2Icon } from "@radix-ui/react-icons";
 import { useCallback, useRef } from "react";
-import { toPng } from "html-to-image";
+import { toBlob, toPng } from "html-to-image";
 
 export const DuaCard = ({
   title,
@@ -22,15 +22,16 @@ export const DuaCard = ({
       return;
     }
 
-    toPng(ref.current, { cacheBust: true })
-      .then((dataUrl) => {
+    toBlob(ref.current, { cacheBust: true })
+      .then((blob) => {
+        if (!blob) {
+          console.error("Empty blob.");
+          return;
+        }
         if (navigator.share) {
           navigator
             .share({
-              title: "Shared Image",
-              files: [new File([dataUrl], "image.png", { type: "image/png" })],
-              // You can also include text or URL if needed
-              text: title,
+              files: [new File([blob!], "dua.png", { type: blob!.type })],
               url: window.location.href,
             })
             .then(() => console.log("Shared successfully"))
