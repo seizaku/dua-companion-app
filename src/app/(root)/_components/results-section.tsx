@@ -22,7 +22,7 @@ export const ResultSection = () => {
         />
       ))}
       {isLoading && <LoadingState />}
-      {duas.length > 0 ? (
+      {duas.length > 0 && !isLoading ? (
         <ShowMore />
       ) : (
         <p className="text-center text-xs h-96">No contents generated yet.</p>
