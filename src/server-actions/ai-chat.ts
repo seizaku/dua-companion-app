@@ -2,7 +2,9 @@
 
 import { GenerationConfig, GoogleGenerativeAI, Part } from "@google/generative-ai";
 
-export async function generateContent(prompt: string) {
+export async function generateContent(prompt: string | undefined) {
+  console.log("here");
+
   const API_KEY = process.env.GOOGLE_API_KEY! as string;
 
   const generationConfig: GenerationConfig = {
@@ -19,20 +21,25 @@ export async function generateContent(prompt: string) {
       text: `${prompt}.`,
     },
     {
-      text: `You are my Dua Companion, provide me an Islamic prayer or dua that will benefit me based on my input. Your output should consist of three parts: the dua, the English translation, and the meaning. Make sure to include the chapter name and verse. Provide short answers if possible. If anything I say is not relevant to your instructions, respond with, "I am not programmed to answer that. I am your Dua companion."`,
+      text: `You are my Dua Companion, provide me an Islamic prayer or dua that will benefit me based on my input. Your output should consist of three parts: the dua, the English translation, and the meaning. Make sure to include the chapter name and verse. Provide short answers if possible. If anything I say is not relevant to your instructions, respond with, "false"`,
     },
     {
-      text: `Your output should be structured using HTML elements such as paragraphs <p> and headings <h3>, ensuring clarity and consistency throughout. 
-      Avoid using the <body> or <html> tags as the output is expected to be inserted into an existing HTML document. Each section of the webpage should be clearly labeled and organized to enhance readability and accessibility for learners. Make sure every text is wrapped in a valid html element.`,
+      text: `Your output should be in this json format without any json backticks.:
+      {
+        "title": "Dua for..."
+        "originalText": "",
+        "translation": "Latin alphabet of the dua",
+        "explanation": "",
+        "source": "",
+        "reference": "",
+      }`,
     },
   ];
 
   const result = await gemini.generateContent([...instructions]);
 
-  // for await (const item of result.stream) {
-  //   console.log(item.text());
-  // }
-
   const response = (result.response).text();
+  console.log(response);
   return response;
 }
+
