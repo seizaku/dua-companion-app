@@ -25,7 +25,7 @@ export const ResultSection = () => {
       {duas.length > 0 ? (
         <ShowMore />
       ) : (
-        <p className="text-center text-xs">No contents generated yet.</p>
+        <p className="text-center text-xs h-96">No contents generated yet.</p>
       )}
     </div>
   );
