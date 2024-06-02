@@ -37,9 +37,13 @@ export async function generateContent(prompt: string | undefined) {
     },
   ];
 
-  const result = await gemini.generateContent([...instructions]);
+  const result = await gemini.generateContentStream([...instructions]);
 
-  const response = (result.response).text();
+  for await (const item of result.stream) {
+    console.log(item.text());
+  }
+
+  const response = (await result.response).text();
   console.log(response);
   return response;
 }
