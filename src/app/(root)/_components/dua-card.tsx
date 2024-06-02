@@ -1,7 +1,10 @@
 import { Badge } from "@/components/ui/badge";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Dua } from "@/model/dua";
 import { NameGradient } from "./name-gradient";
+import { Button } from "@/components/ui/button";
+import { Share2Icon } from "@radix-ui/react-icons";
+import { useCallback, useRef } from "react";
+import { toPng } from "html-to-image";
 
 export const DuaCard = ({
   title,
@@ -12,10 +15,42 @@ export const DuaCard = ({
   reference,
   color,
 }: Dua) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleShare = useCallback(() => {
+    if (ref.current === null) {
+      return;
+    }
+
+    toPng(ref.current, { cacheBust: true })
+      .then((dataUrl) => {
+        if (navigator.share) {
+          navigator
+            .share({
+              title: "Shared Image",
+              files: [new File([dataUrl], "image.png", { type: "image/png" })],
+              // You can also include text or URL if needed
+              text: title,
+              url: window.location.href,
+            })
+            .then(() => console.log("Shared successfully"))
+            .catch((error) => console.error("Error sharing:", error));
+        } else {
+          console.error("Web Share API not supported.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [ref]);
+
   return (
-    <div className="h-fit w-full rounded-md p-4 text-xs shadow-md border">
+    <div
+      ref={ref}
+      className="h-fit w-full bg-background rounded-md p-4 text-xs shadow-md border"
+    >
       <h1 className="font-light mb-2">{title}</h1>
-      <div className="flex gap-4 w-full max-h-96">
+      <div className="flex gap-4 w-full max-h-[720px]">
         <NameGradient color={color!} />
         <div className="w-full flex flex-col gap-4">
           <div>
@@ -44,13 +79,25 @@ export const DuaCard = ({
           </div>
         </div>
       </div>
-      <div className="mt-4 flex gap-4">
-        <Badge variant={"secondary"} className="font-light">
-          {source}
-        </Badge>
-        <Badge variant={"secondary"} className="font-light">
-          {reference}
-        </Badge>
+      <div className="mt-4 flex justify-between gap-4">
+        <div className="flex gap-4">
+          <Badge variant={"secondary"} className="font-light">
+            {source}
+          </Badge>
+          <Badge variant={"secondary"} className="font-light">
+            {reference}
+          </Badge>
+        </div>
+        <Button
+          onClick={(e) => {
+            handleShare();
+          }}
+          variant={"ghost"}
+          size={"icon"}
+          className="h-6 text-xs"
+        >
+          <Share2Icon />
+        </Button>
       </div>
     </div>
   );
