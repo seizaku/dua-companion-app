@@ -20,7 +20,7 @@ export const ResultSection = () => {
           reference={dua.reference}
         />
       ))}
-      <ShowMore />
+      {duas && <ShowMore />}
     </div>
   );
 };
