@@ -4,6 +4,7 @@ import { HeroSection } from "./_components/hero-section";
 import { PromptForm } from "./_components/prompt-form";
 import { DonateSection } from "./_components/donate-section";
 import { ResultSection } from "./_components/results-section";
+import { Footer } from "./_components/footer";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <PromptForm />
         <DonateSection />
         <ResultSection />
+        <Footer />
       </div>
     </main>
   );
