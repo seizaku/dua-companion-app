@@ -30,7 +30,7 @@ export async function generateContent(prompt: string | undefined) {
           "translation": "Latin alphabet of the dua",
           "explanation": "Short explanation",
           "source": "Example: Quran",
-          "reference": "Always give proper reference. Example: Surah Al-Furqan (25:67). Short reference number is required.",
+          "reference": "Always give authentic reference. Example: Surah Al-Furqan (25:67). Short reference number is required. If there are no references, just write "N/A".",
         }
         ...
       ]`,
