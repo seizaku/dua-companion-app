@@ -75,7 +75,6 @@ export const PromptForm = () => {
         </div>
         <Input
           onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
           disabled={isLoading}
           onChange={(e) => setText(e.currentTarget.value)}
           value={text || ""}
